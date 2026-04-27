@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { Bookmark, Sparkles } from "lucide-react";
 import { HobbyCard } from "../lib/hobbyInsights";
 
 type Props = {
@@ -29,12 +29,16 @@ export function FavoritesSection({ favorites, hobbyCards }: Props) {
 
   return (
     <section id="favorites" className="section-wrap">
-      <div className="glass-card p-6 md:p-8">
+      <div className="bs-glass-card glass-card p-8 md:p-10">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="section-title">Saved Hobbies Dashboard</h2>
             <p className="section-subtitle">Keep a curated shortlist and filter by category.</p>
           </div>
+          <span className="shortlist-count-chip inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium">
+            <Bookmark className="h-3.5 w-3.5" />
+            {savedCards.length} saved
+          </span>
           <div className="flex flex-wrap gap-2">
             {filters.map((option) => (
               <button
@@ -52,7 +56,7 @@ export function FavoritesSection({ favorites, hobbyCards }: Props) {
         </div>
 
         {savedCards.length === 0 ? (
-          <div className="body-copy rounded-xl border border-dashed border-white/20 bg-white/5 px-4 py-8 text-center">
+          <div className="shortlist-empty body-copy rounded-xl border border-dashed px-4 py-9 text-center">
             <Sparkles className="mx-auto mb-3 h-6 w-6 text-cyan-300" />
             No favorites yet. Bookmark recommendations to build your personalized hobby stack.
           </div>
@@ -64,9 +68,9 @@ export function FavoritesSection({ favorites, hobbyCards }: Props) {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
-                className="mb-3 break-inside-avoid rounded-xl border border-white/15 bg-white/5 p-4 transition hover:-translate-y-0.5 hover:border-cyan-300/40"
+                className="shortlist-card bs-glass-card card elevated-hover mb-3 break-inside-avoid rounded-xl p-4 hover:border-cyan-300/40"
               >
-                <p className="mb-1 text-[0.82rem] text-cyan-200">{card.category}</p>
+                <p className="mb-2 text-[0.76rem] uppercase tracking-[0.12em] text-cyan-200">{card.category}</p>
                 <h3 className="text-[0.97rem] font-semibold text-white">{card.title}</h3>
                 <p className="body-copy mt-2 text-[0.88rem]">{card.whyMatch}</p>
               </motion.article>

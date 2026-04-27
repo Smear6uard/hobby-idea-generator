@@ -42,7 +42,7 @@ export function QuizSection({ form, onChange, onSubmit, loading }: Props) {
 
   return (
     <section id="quiz" className="section-wrap">
-      <motion.div layout className="glass-card p-6 md:p-8">
+      <motion.div layout className="bs-glass-card glass-card p-8 md:p-10">
         <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
           <div>
             <h2 className="section-title">Personalization Quiz</h2>
@@ -53,11 +53,11 @@ export function QuizSection({ form, onChange, onSubmit, loading }: Props) {
           </span>
         </div>
 
-        <div className="mb-6 h-2 rounded-full bg-white/10">
+        <div className="progress mb-6 h-2 rounded-full bg-white/10">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${(progress / 3) * 100}%` }}
-            className="h-2 rounded-full bg-gradient-to-r from-violet-500 to-cyan-400"
+            className="progress-bar rounded-full bg-cyan-500"
           />
         </div>
 
@@ -71,12 +71,12 @@ export function QuizSection({ form, onChange, onSubmit, loading }: Props) {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -30 }}
               >
-                <label className="mb-2 block text-sm font-medium text-slate-200" htmlFor="interests">
+                <label className="form-label mb-2 block text-sm font-medium text-slate-200" htmlFor="interests">
                   What are you curious about?
                 </label>
                 <textarea
                   id="interests"
-                  className="input-modern min-h-32"
+                  className="form-control input-modern min-h-32"
                   value={form.interests}
                   onChange={(e) => onChange("interests", e.target.value)}
                   placeholder="music, creativity, confidence, social hobbies..."
@@ -93,18 +93,18 @@ export function QuizSection({ form, onChange, onSubmit, loading }: Props) {
                 className="grid gap-4 md:grid-cols-2"
               >
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-200" htmlFor="weekly_time">
+                  <label className="form-label mb-2 block text-sm font-medium text-slate-200" htmlFor="weekly_time">
                     Weekly time commitment
                   </label>
                   <input
                     id="weekly_time"
-                    className="input-modern"
+                    className="form-control input-modern"
                     value={form.weekly_time}
                     onChange={(e) => onChange("weekly_time", e.target.value)}
                     placeholder="e.g. 4 hours"
                   />
                 </div>
-                <div className="rounded-xl border border-white/15 bg-white/5 px-4 py-3">
+                <div className="card bs-glass-card rounded-xl px-4 py-3">
                   <p className="mb-1 text-xs uppercase tracking-[0.16em] text-cyan-200">Tip</p>
                   <p className="body-copy text-[0.9rem]">
                     Honest availability helps the AI avoid overambitious suggestions.
@@ -120,29 +120,31 @@ export function QuizSection({ form, onChange, onSubmit, loading }: Props) {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -30 }}
               >
-                <label className="mb-2 block text-sm font-medium text-slate-200">Monthly budget</label>
-                <div className="flex flex-wrap gap-2">
+                <label className="form-label mb-2 block text-sm font-medium text-slate-200">Monthly budget</label>
+                <div className="d-flex flex-wrap gap-2" role="group" aria-label="Monthly budget choices">
                   {budgetOptions.map((option) => (
                     <button
                       key={option}
                       type="button"
                       onClick={() => onChange("budget", option)}
-                      className={`pill-option ${
-                        form.budget === option ? "border-cyan-300 bg-cyan-300/20 text-white" : "text-slate-300"
+                      className={`btn quiz-pill btn-outline-light pill-option ${
+                        form.budget === option
+                          ? "active border-cyan-300 bg-cyan-300/20 text-white"
+                          : "text-slate-300"
                       }`}
                     >
                       {option}
                     </button>
                   ))}
                 </div>
-                <div className="mt-4 rounded-xl border border-white/15 bg-white/5 p-4">
+                <div className="card bs-glass-card mt-4 rounded-xl p-4">
                   <p className="body-copy mb-2 text-[0.9rem]">Energy preference</p>
                   <input
                     type="range"
                     min={1}
                     max={10}
                     defaultValue={6}
-                    className="w-full accent-cyan-400"
+                    className="form-range w-full accent-cyan-400"
                     aria-label="Energy preference slider"
                   />
                 </div>
@@ -150,38 +152,36 @@ export function QuizSection({ form, onChange, onSubmit, loading }: Props) {
             )}
           </AnimatePresence>
 
-          <div className="flex flex-wrap justify-between gap-3">
+          <div className="flex items-center justify-end gap-4">
             <button
               type="button"
               onClick={() => setStep((prev) => Math.max(0, prev - 1))}
               disabled={step === 0 || loading}
-              className="inline-flex items-center gap-2 rounded-xl border border-white/20 px-4 py-3 text-sm text-slate-200 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
+              className="btn btn-outline-light btn-modern quiz-nav-btn inline-flex items-center gap-2 border-white/20 bg-white/5 px-4 py-2.5 text-sm text-slate-200 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <ChevronLeft className="h-4 w-4" />
               Back
             </button>
 
-            <div className="flex items-center gap-2">
-              {step < 2 && (
-                <button
-                  type="submit"
-                  disabled={!canContinue || loading}
-                  className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-violet-500 to-cyan-500 px-5 py-3 text-sm font-semibold text-white shadow-glow transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  Continue
-                  <ChevronRight className="h-4 w-4" />
-                </button>
-              )}
-              {step === 2 && (
-                <button
-                  type="submit"
-                  disabled={!canContinue || loading}
-                  className="rounded-xl bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-500 px-6 py-3 text-sm font-semibold text-white shadow-glow transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-70"
-                >
-                  {loading ? "Generating with AI..." : "Generate My Hobby Plan"}
-                </button>
-              )}
-            </div>
+            {step < 2 && (
+              <button
+                type="submit"
+                disabled={!canContinue || loading}
+                className="btn btn-primary btn-modern quiz-nav-btn inline-flex items-center gap-2 px-4 py-2.5 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                Continue
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            )}
+            {step === 2 && (
+              <button
+                type="submit"
+                disabled={!canContinue || loading}
+                className="btn btn-primary btn-modern quiz-nav-btn inline-flex items-center gap-2 px-4 py-2.5 disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                {loading ? "Generating with AI..." : "Generate My Hobby Plan"}
+              </button>
+            )}
           </div>
         </form>
       </motion.div>

@@ -120,9 +120,9 @@ export default function App() {
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="section-wrap mt-5 rounded-xl border border-cyan-300/25 bg-cyan-400/10 px-4 py-2 text-center text-sm text-cyan-100"
+        className="section-wrap shortlist-banner mt-5 rounded-xl border px-4 py-3 text-center text-sm"
       >
-        <span className="font-medium">{favoriteCount}</span> hobbies saved in your shortlist
+        <span className="font-semibold">{favoriteCount}</span> hobbies saved in your shortlist
       </motion.div>
 
       <QuizSection form={form} onChange={updateForm} onSubmit={onSubmit} loading={loading} />

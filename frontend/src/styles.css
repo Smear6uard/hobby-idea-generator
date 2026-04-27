@@ -1,8 +1,21 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --bs-primary: #6366f1;
+  --bs-info: #22d3ee;
+  --bs-secondary: #0f172a;
+  --bs-body-bg: #020617;
+  --bs-body-color: #e2e8f0;
+  --bs-border-radius: 1rem;
+  --bs-border-radius-sm: 0.85rem;
+  --bs-border-radius-lg: 1.2rem;
+  --bs-border-radius-xl: 1.35rem;
+  --bs-border-radius-xxl: 1.5rem;
+}
 
 @layer base {
   html {
@@ -11,19 +24,14 @@
   }
 
   body {
-    @apply m-0 bg-slate-950 text-slate-100 antialiased;
-    background-image:
-      radial-gradient(circle at 10% 15%, rgba(168, 85, 247, 0.25), transparent 30%),
-      radial-gradient(circle at 85% 10%, rgba(34, 211, 238, 0.22), transparent 30%),
-      radial-gradient(circle at 50% 90%, rgba(59, 130, 246, 0.18), transparent 35%);
+    @apply m-0 bg-slate-950 font-sans text-slate-100 antialiased;
+    background-color: #0b1020;
+    background-image: none;
   }
 
   body.light-theme {
     @apply bg-slate-100 text-slate-900;
-    background-image:
-      radial-gradient(circle at 10% 15%, rgba(168, 85, 247, 0.16), transparent 30%),
-      radial-gradient(circle at 85% 10%, rgba(34, 211, 238, 0.14), transparent 30%),
-      radial-gradient(circle at 50% 90%, rgba(59, 130, 246, 0.1), transparent 35%);
+    background-image: none;
   }
 }
 
@@ -33,15 +41,15 @@
   }
 
   .section-wrap {
-    @apply app-shell mt-6 md:mt-8;
+    @apply app-shell mt-10 py-2 md:mt-12 md:py-3;
   }
 
   .glass-card {
-    @apply rounded-2xl border border-white/15 bg-white/5 shadow-card backdrop-blur-xl;
+    @apply rounded-2xl border border-white/15 bg-white/[0.06] shadow-card backdrop-blur-xl transition;
   }
 
   .nav-link {
-    @apply rounded-lg px-3 py-2 text-sm text-slate-200 transition hover:bg-white/10 hover:text-white;
+    @apply rounded-lg px-3 py-2 text-sm text-slate-200 transition duration-200 hover:-translate-y-[1px] hover:bg-white/10 hover:text-white;
   }
 
   .input-modern {
@@ -49,7 +57,7 @@
   }
 
   .pill-option {
-    @apply rounded-full border border-white/20 px-4 py-2 text-sm transition hover:border-cyan-300/70 hover:bg-cyan-300/10;
+    @apply rounded-full border border-white/20 px-4 py-2 text-sm transition duration-200 hover:-translate-y-[1px] hover:border-cyan-300/70 hover:bg-cyan-300/10;
   }
 
   .section-title {
@@ -66,6 +74,22 @@
 
   .meta-copy {
     @apply text-[0.8rem] leading-relaxed text-slate-400;
+  }
+
+  .elevated-hover {
+    @apply transition duration-300 hover:-translate-y-1 hover:shadow-glow;
+  }
+
+  .btn-modern {
+    @apply rounded-xl border-0 px-4 py-2 text-sm font-semibold shadow-glow transition duration-200 hover:-translate-y-[1px];
+  }
+
+  .bs-glass-card {
+    @apply border border-white/15 bg-white/[0.06] text-slate-100 shadow-card backdrop-blur-xl;
+  }
+
+  .bs-muted {
+    @apply text-slate-300;
   }
 }
 
@@ -87,4 +111,131 @@ body.light-theme .section-title {
 
 body.light-theme .section-subtitle {
   @apply text-slate-600;
+}
+
+body.light-theme .glass-card {
+  @apply bg-white/80;
+}
+
+.btn.btn-primary {
+  background-image: none;
+  background-color: #2563eb;
+  border-color: transparent;
+}
+
+.btn.btn-primary:hover,
+.btn.btn-primary:focus {
+  border-color: transparent;
+  filter: brightness(1.06);
+}
+
+.btn.btn-outline-light {
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.form-control.input-modern,
+.form-control.input-modern:focus {
+  background-color: rgba(15, 23, 42, 0.55);
+  color: #e2e8f0;
+}
+
+.form-control.input-modern::placeholder {
+  color: #94a3b8;
+}
+
+.form-label {
+  color: #cbd5e1;
+}
+
+.form-range::-webkit-slider-thumb {
+  background: #2563eb;
+}
+
+.form-range::-moz-range-thumb {
+  background: #2563eb;
+  border: 0;
+}
+
+.card.bs-glass-card .card-title {
+  color: #fff;
+}
+
+.list-group-item.bs-list-item {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #dbeafe;
+}
+
+.hobby-dashboard-card {
+  background: rgba(15, 23, 42, 0.38);
+}
+
+.dashboard-mini-card {
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.dashboard-mini-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(34, 211, 238, 0.45);
+  box-shadow: 0 10px 28px rgba(34, 211, 238, 0.16);
+}
+
+.feature-chip-card {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(15, 23, 42, 0.5);
+}
+
+.shortlist-banner {
+  border-color: rgba(34, 211, 238, 0.3);
+  background: rgba(8, 47, 73, 0.28);
+  color: #c7f1ff;
+  box-shadow: inset 0 0 0 1px rgba(34, 211, 238, 0.08);
+}
+
+.shortlist-count-chip {
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  background: rgba(8, 47, 73, 0.28);
+  color: #c7f1ff;
+}
+
+.shortlist-empty {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(15, 23, 42, 0.42);
+}
+
+.shortlist-card {
+  background: rgba(15, 23, 42, 0.48);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.quiz-pill {
+  min-width: 92px;
+}
+
+.quiz-pill.active {
+  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.35);
+}
+
+.quiz-nav-btn {
+  min-height: 44px;
+}
+
+/* Global rounded-corner pass for all major UI boxes */
+.glass-card,
+.bs-glass-card,
+.card,
+.btn,
+.form-control,
+.input-modern,
+.nav-link,
+.pill-option,
+.badge,
+.list-group-item,
+.dashboard-mini-card,
+.feature-chip-card,
+.shortlist-card,
+.shortlist-banner,
+.shortlist-empty,
+.shortlist-count-chip {
+  border-radius: 1rem !important;
 }

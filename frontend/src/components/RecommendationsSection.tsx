@@ -61,7 +61,7 @@ export function RecommendationsSection({
 }: Props) {
   return (
     <section id="recommendations" className="section-wrap">
-      <div className="glass-card p-6 md:p-8">
+      <div className="bs-glass-card glass-card p-8 md:p-10">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="section-title">AI Recommendations</h2>
@@ -112,7 +112,7 @@ export function RecommendationsSection({
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.06 }}
-                  className="glass-card group relative overflow-hidden p-5 transition hover:-translate-y-1 hover:border-cyan-300/40"
+                  className="bs-glass-card card elevated-hover group relative overflow-hidden p-5 hover:border-cyan-300/40"
                 >
                   <div className="absolute -right-8 -top-8 h-20 w-20 rounded-full bg-cyan-500/20 blur-2xl" />
                   <div className="mb-3 flex items-start justify-between gap-3">
