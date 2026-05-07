@@ -2,12 +2,14 @@ import { motion } from "framer-motion";
 import {
   Bookmark,
   Brush,
+  ChevronDown,
   Clock3,
   Cpu,
   DollarSign,
   Dumbbell,
   Heart,
   Lightbulb,
+  Package,
   Signal,
   Sparkles,
 } from "lucide-react";
@@ -116,11 +118,11 @@ export function RecommendationsSection({
                 >
                   <div className="absolute -right-8 -top-8 h-20 w-20 rounded-full bg-cyan-500/20 blur-2xl" />
                   <div className="mb-3 flex items-start justify-between gap-3">
-                    <div className="flex items-start gap-2">
+                    <div className="flex min-w-0 flex-1 items-start gap-2">
                       <div className="mt-0.5 rounded-lg bg-cyan-500/15 p-2 text-cyan-200">
                         <CategoryIcon className="h-4 w-4" />
                       </div>
-                      <div>
+                      <div className="min-w-0 flex-1">
                         <h3 className="text-[1.02rem] font-semibold text-white">{hobby.title}</h3>
                         <p className="body-copy text-[0.88rem]">{hobby.description}</p>
                       </div>
@@ -138,6 +140,26 @@ export function RecommendationsSection({
                       <Bookmark className="h-4 w-4" />
                     </button>
                   </div>
+
+                  {hobby.materials.length > 0 && (
+                    <details className="group mb-4 w-full rounded-lg border border-white/10 bg-white/5 open:border-cyan-400/25 open:bg-white/[0.07]">
+                      <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-2.5 text-left text-[11px] font-medium uppercase tracking-wide text-slate-400 outline-none ring-cyan-400/40 marker:content-none focus-visible:ring-2 [&::-webkit-details-marker]:hidden">
+                        <span className="flex items-center gap-1.5 text-slate-300">
+                          <Package className="h-3.5 w-3.5 text-cyan-300" />
+                          Key materials
+                        </span>
+                        <ChevronDown className="h-4 w-4 shrink-0 text-slate-500 transition-transform duration-200 group-open:rotate-180" aria-hidden />
+                      </summary>
+                      <ul className="space-y-1.5 border-t border-white/10 px-3 pb-3 pt-2 text-[0.85rem] leading-snug text-slate-200">
+                        {hobby.materials.map((material, mi) => (
+                          <li key={`${hobby.title}-mat-${mi}`} className="flex gap-2">
+                            <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-cyan-400/80" />
+                            <span>{material}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  )}
 
                   <div className="mb-4 grid grid-cols-2 gap-2 text-xs">
                     <Stat icon={Signal} label="Difficulty" value={hobby.difficulty} />

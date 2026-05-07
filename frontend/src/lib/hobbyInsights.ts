@@ -1,11 +1,17 @@
 export type HobbyCard = {
   title: string;
+  materials: string[];
   description: string;
   difficulty: "Easy" | "Moderate" | "Intermediate";
   estimatedCost: "Low" | "Medium" | "High";
   timeCommitment: string;
   category: "Creative" | "Mindfulness" | "Fitness" | "Tech" | "Lifestyle";
   whyMatch: string;
+};
+
+export type HobbyApiItem = {
+  name: string;
+  materials: string[];
 };
 
 const categoryHints: Record<HobbyCard["category"], string[]> = {
@@ -42,8 +48,10 @@ const descriptionByCategory: Record<HobbyCard["category"], string> = {
   Lifestyle: "Practical hobby that blends naturally into everyday life.",
 };
 
-export function enrichHobbies(hobbies: string[], weeklyTime: number, budget: number): HobbyCard[] {
-  return hobbies.map((title, index) => {
+export function enrichHobbies(items: HobbyApiItem[], weeklyTime: number, budget: number): HobbyCard[] {
+  return items.map((item, index) => {
+    const title = item.name.trim();
+    const materials = item.materials.map((m) => m.trim()).filter(Boolean).slice(0, 4);
     const category = inferCategory(title);
     const difficulty: HobbyCard["difficulty"] =
       index % 3 === 0 ? "Easy" : index % 3 === 1 ? "Moderate" : "Intermediate";
@@ -56,6 +64,7 @@ export function enrichHobbies(hobbies: string[], weeklyTime: number, budget: num
 
     return {
       title,
+      materials,
       description: descriptionByCategory[category],
       difficulty,
       estimatedCost,

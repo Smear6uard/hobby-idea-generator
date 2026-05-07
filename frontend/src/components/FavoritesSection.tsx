@@ -1,22 +1,20 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Bookmark, Sparkles } from "lucide-react";
+import { Bookmark, ChevronDown, Package, Sparkles } from "lucide-react";
 import { HobbyCard } from "../lib/hobbyInsights";
 
 type Props = {
-  favorites: Set<string>;
-  hobbyCards: HobbyCard[];
+  savedHobbies: HobbyCard[];
 };
 
-export function FavoritesSection({ favorites, hobbyCards }: Props) {
+export function FavoritesSection({ savedHobbies }: Props) {
   const [filter, setFilter] = useState<"All" | HobbyCard["category"]>("All");
 
   const savedCards = useMemo(() => {
-    return hobbyCards.filter((card) => {
-      if (!favorites.has(card.title)) return false;
+    return savedHobbies.filter((card) => {
       return filter === "All" ? true : card.category === filter;
     });
-  }, [favorites, hobbyCards, filter]);
+  }, [savedHobbies, filter]);
 
   const filters: Array<"All" | HobbyCard["category"]> = [
     "All",
@@ -72,6 +70,22 @@ export function FavoritesSection({ favorites, hobbyCards }: Props) {
               >
                 <p className="mb-2 text-[0.76rem] uppercase tracking-[0.12em] text-cyan-200">{card.category}</p>
                 <h3 className="text-[0.97rem] font-semibold text-white">{card.title}</h3>
+                {card.materials.length > 0 && (
+                  <details className="group mt-3 rounded-lg border border-white/10 bg-white/5 open:border-cyan-400/25 open:bg-white/[0.07]">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-2.5 py-2 text-left text-[10px] font-medium uppercase tracking-wide text-slate-400 outline-none ring-cyan-400/40 marker:content-none focus-visible:ring-2 [&::-webkit-details-marker]:hidden">
+                      <span className="flex items-center gap-1 text-slate-300">
+                        <Package className="h-3 w-3 text-cyan-300" />
+                        Materials
+                      </span>
+                      <ChevronDown className="h-3.5 w-3.5 shrink-0 text-slate-500 transition-transform duration-200 group-open:rotate-180" aria-hidden />
+                    </summary>
+                    <ul className="space-y-1 border-t border-white/10 px-2.5 pb-2.5 pt-2 text-[0.8rem] text-slate-200">
+                      {card.materials.map((m, mi) => (
+                        <li key={`${card.title}-fav-m-${mi}`}>• {m}</li>
+                      ))}
+                    </ul>
+                  </details>
+                )}
                 <p className="body-copy mt-2 text-[0.88rem]">{card.whyMatch}</p>
               </motion.article>
             ))}

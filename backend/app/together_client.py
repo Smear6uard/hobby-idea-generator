@@ -10,7 +10,10 @@ def _build_prompt(payload: HobbyRequest) -> str:
     return (
         "You are a hobby recommendation assistant.\n"
         "Given the user profile, suggest exactly 8 beginner-friendly hobbies.\n"
-        "Return ONLY valid JSON as an array of hobby names.\n"
+        "Return ONLY valid JSON: an array of 8 objects. Each object must have:\n"
+        '- "name": string (short hobby title)\n'
+        '- "materials": array of 3 to 4 strings (specific supplies, tools, or gear a beginner needs)\n'
+        "Do not include markdown fences or any text outside the JSON array.\n"
         f"Interests: {payload.interests}\n"
         f"Weekly time: {payload.weekly_time}\n"
         f"Budget: {payload.budget}\n"

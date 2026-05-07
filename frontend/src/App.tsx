@@ -7,6 +7,7 @@ import { HeroSection } from "./components/HeroSection";
 import { Navbar } from "./components/Navbar";
 import { QuizSection } from "./components/QuizSection";
 import { RecommendationsSection } from "./components/RecommendationsSection";
+import { loadSavedHobbies, persistSavedHobbies } from "./lib/favoriteStorage";
 import { HobbyCard, enrichHobbies } from "./lib/hobbyInsights";
 
 type GenerateRequest = {
@@ -16,7 +17,7 @@ type GenerateRequest = {
 };
 
 type GenerateResponse = {
-  hobbies: string[];
+  hobbies: Array<{ name: string; materials: string[] }>;
   meta: {
     model: string;
     latency_ms: number;
@@ -38,7 +39,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [meta, setMeta] = useState<GenerateResponse["meta"] | null>(null);
-  const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [savedHobbies, setSavedHobbies] = useState<HobbyCard[]>(loadSavedHobbies);
   const [darkMode, setDarkMode] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -75,7 +76,21 @@ export default function App() {
 
       const weeklyTime = Number.parseInt(form.weekly_time.replace(/\D/g, ""), 10) || 3;
       const budget = Number.parseInt(form.budget.replace(/\D/g, ""), 10) || 30;
-      setHobbyCards(enrichHobbies(data.hobbies, weeklyTime, budget));
+      const enriched = enrichHobbies(
+        data.hobbies.map((h) => ({
+          name: h.name,
+          materials: Array.isArray(h.materials) ? h.materials : [],
+        })),
+        weeklyTime,
+        budget
+      );
+      setHobbyCards(enriched);
+      setSavedHobbies((prev) =>
+        prev.map((saved) => {
+          const fresh = enriched.find((c) => c.title === saved.title);
+          return fresh ?? saved;
+        })
+      );
       setMeta(data.meta);
     } catch (submitError) {
       setHobbyCards([]);
@@ -90,18 +105,27 @@ export default function App() {
     document.body.classList.toggle("light-theme", !darkMode);
   }, [darkMode]);
 
-  const favoriteCount = useMemo(() => favorites.size, [favorites]);
+  useEffect(() => {
+    persistSavedHobbies(savedHobbies);
+  }, [savedHobbies]);
+
+  const favorites = useMemo(() => new Set(savedHobbies.map((c) => c.title)), [savedHobbies]);
+
+  const favoriteCount = useMemo(() => savedHobbies.length, [savedHobbies]);
 
   function updateForm(field: keyof GenerateRequest, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
   }
 
   function toggleFavorite(title: string) {
-    setFavorites((prev) => {
-      const next = new Set(prev);
-      if (next.has(title)) next.delete(title);
-      else next.add(title);
-      return next;
+    setSavedHobbies((prev) => {
+      const exists = prev.some((c) => c.title === title);
+      if (exists) {
+        return prev.filter((c) => c.title !== title);
+      }
+      const card = hobbyCards.find((c) => c.title === title);
+      if (!card) return prev;
+      return [...prev, card];
     });
   }
 
@@ -134,7 +158,7 @@ export default function App() {
         favorites={favorites}
         onToggleFavorite={toggleFavorite}
       />
-      <FavoritesSection favorites={favorites} hobbyCards={hobbyCards} />
+      <FavoritesSection savedHobbies={savedHobbies} />
       <Footer />
     </main>
   );

@@ -3,9 +3,9 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from .config import settings
-from .parser import parse_hobbies
+from .parser import parse_hobby_items
 from .rate_limiter import InMemoryRateLimiter
-from .schemas import HobbyMeta, HobbyRequest, HobbyResponse
+from .schemas import HobbyItem, HobbyMeta, HobbyRequest, HobbyResponse
 from .together_client import generate_from_together
 
 app = FastAPI(title="Hobby Generator API")
@@ -47,8 +47,14 @@ async def generate_hobbies(payload: HobbyRequest, request: Request) -> HobbyResp
     except Exception as exc:
         raise HTTPException(status_code=502, detail=f"LLM provider error: {exc}") from exc
 
-    hobbies, fallback_used = parse_hobbies(raw_content)
-    hobbies = list(dict.fromkeys(hobbies))[:10]
+    pairs, fallback_used = parse_hobby_items(raw_content)
+    seen: dict[str, list[str]] = {}
+    for name, materials in pairs:
+        if name not in seen:
+            seen[name] = materials
+    hobbies: list[HobbyItem] = [
+        HobbyItem(name=n, materials=m[:4]) for n, m in list(seen.items())[:10]
+    ]
     if not hobbies:
         raise HTTPException(status_code=502, detail="Could not parse hobby suggestions from model output.")
 

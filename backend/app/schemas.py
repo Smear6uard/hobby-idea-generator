@@ -13,6 +13,11 @@ class HobbyMeta(BaseModel):
     fallback_used: bool
 
 
+class HobbyItem(BaseModel):
+    name: str = Field(min_length=1, max_length=200)
+    materials: list[str] = Field(default_factory=list, max_length=6)
+
+
 class HobbyResponse(BaseModel):
-    hobbies: list[str]
+    hobbies: list[HobbyItem]
     meta: HobbyMeta
